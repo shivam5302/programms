@@ -1,16 +1,17 @@
 #include<bits/stdc++.h>
 using namespace std;
-int regular(string str,string pattern){
+int regular(string str,string pattern,int m,int n){
     
-    if(str[0]=='\0'&&pattern[0]=='\0'){
+    if(n==0&&m==0){
         return true;
     }
+    else if(n==0||m==0) return false;
     
-    if(pattern[0]=='*'){
-        return regular(str,pattern.substr(1))||regular(str.substr(1),pattern);
+    if(pattern[n-1]=='*'){
+        return regular(str,pattern,m,n-1)||regular(str,pattern,m-1,n);
     }
-    if(pattern[0]=='?' || str[0]==pattern[0]){
-        return regular(str.substr(1),pattern.substr(1));
+    if(pattern[n-1]=='?' || str[m-1]==pattern[n-1]){
+        return regular(str,pattern,m-1,n-1);
     }
     
     return false;
@@ -20,8 +21,8 @@ int regular(string str,string pattern){
 int main(){
     
        string str = "baaabab"; 
-     string pattern = "ba*a?";
+     string pattern = "b*a*aa*bab";
     
-    cout<<regular(str,pattern);
+    cout<<regular(str,pattern,str.size(),pattern.size());
     
 }
